@@ -1,7 +1,25 @@
 services:
-  app:
-    build: .
-    container_name: python-server
-    command: uvicorn src.main:app --host 0.0.0.0 --port 80 --reload
+  db:
+    container_name: db
+    image: postgres:15.0-alpine
+    volumes:
+      - pgdbdata:/var/lib/postgresql/data/
+    env_file:
+      - .env
     ports:
-      - 80:80
+      - 5433:5432
+
+
+  fastapi_app:
+    build: .
+    container_name: fastapi_app
+    command: alembic upgrade head && uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+
+volumes:
+  pgdbdata: null
