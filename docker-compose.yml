@@ -1,4 +1,4 @@
-version: '3.7'
+
 services:
   db:
     container_name: db
@@ -9,27 +9,18 @@ services:
       - .env
     ports:
       - 5433:5432
-    # networks:
-    #   - network1
 
   fastapi_app:
     build:
       context: .
     container_name: fastapi_app
-    restart: on-failure
-    command: alembic upgrade head && uvicorn src.main:app --bind=0.0.0.0:8000 --reload
     env_file:
       - .env
     ports:
       - 8000:8000
+    command: /python_app/docker/app.sh
     depends_on:
       - db
-    # networks:
-    #   - network1
 
 volumes:
   pgdbdata:
-# networks:
-#   network1:
-#     name: network1
-#     driver: bridge

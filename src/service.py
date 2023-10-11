@@ -12,7 +12,7 @@ from src.utils import get_questions_from_service
 class QuestionService:
     def __init__(self, session: AsyncSession = Depends(get_async_session)):
         self.session = session
-    
+
     async def is_duplicate(self, id: int) -> bool:
         """Checks if the question already exists in DB.
         Args:
@@ -34,7 +34,7 @@ class QuestionService:
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail="Temporary unavailable"
             )
-                
+    
     async def add(self, quantity: int) -> QuestionSchema:
         """Saves questions to DB.
         Args:

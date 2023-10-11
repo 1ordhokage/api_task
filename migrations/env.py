@@ -1,33 +1,25 @@
-from logging.config import fileConfig
-
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-
-from alembic import context
-
-
 import os
 import sys
+from logging.config import fileConfig
 
+from alembic import context
+from sqlalchemy import engine_from_config, pool
 
-sys.path.append(os.path.join(sys.path[0], 'src'))
+sys.path.append(os.path.join(sys.path[0], "src"))
 
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
-from src.config import db_settings
-from src.database import create_async_engine, Base
 from src import models
-
+from src.config import db_settings
+from src.database import Base, create_async_engine
 
 config = context.config
 
-section = config.config_ini_section
-config.set_section_option(section, "DB_HOST", db_settings.HOST)
-config.set_section_option(section, "DB_PORT", db_settings.PORT)
-config.set_section_option(section, "POSTGRES_USER", db_settings.USER)
-config.set_section_option(section, "POSTGRES_PASSWORD", db_settings.PASS)
-config.set_section_option(section, "POSTGRES_DB", db_settings.NAME)
+config.set_main_option(
+    "sqlalchemy.url", f"{db_settings.connection_string}?async_fallback=True"
+)
+
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -84,9 +76,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()
