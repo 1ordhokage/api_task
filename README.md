@@ -49,4 +49,10 @@ POST http://0.0.0.0:8000/questions/?questions_num=100
   "answer": "complementary",
   "created_at": "2022-12-30T21:25:06.605000Z"
 }
+
 ```
+<img width="1422" alt="swagger_screenshot" src="https://github.com/1ordhokage/api_task/assets/61906886/21819e83-1a77-4b54-8795-e76cad3363f5">
+
+
+
+
