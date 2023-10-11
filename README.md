@@ -33,6 +33,20 @@ __Задачи__:
 
     docker-compose up --build
 
-Swagger: `http://127.0.0.1:8000/docs`
+Swagger: `http://0.0.0.0:8000/docs`
 
 ## Пример запроса:
+```HTTP
+POST http://0.0.0.0:8000/questions/?questions_num=100
+```
+
+Привер тела ответа - последний добавленный вопрос:
+
+```JSON
+{
+  "id": 185133,
+  "question": "It describes these two angles that tell you how lovely & terrific you are",
+  "answer": "complementary",
+  "created_at": "2022-12-30T21:25:06.605000Z"
+}
+```
