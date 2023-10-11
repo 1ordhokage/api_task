@@ -1,25 +1,35 @@
+version: '3.7'
 services:
   db:
     container_name: db
-    image: postgres:15.0-alpine
+    image: postgres:15
     volumes:
       - pgdbdata:/var/lib/postgresql/data/
     env_file:
       - .env
     ports:
       - 5433:5432
-
+    # networks:
+    #   - network1
 
   fastapi_app:
-    build: .
+    build:
+      context: .
     container_name: fastapi_app
-    command: alembic upgrade head && uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+    restart: on-failure
+    command: alembic upgrade head && uvicorn src.main:app --bind=0.0.0.0:8000 --reload
     env_file:
       - .env
     ports:
       - 8000:8000
     depends_on:
       - db
+    # networks:
+    #   - network1
 
 volumes:
-  pgdbdata: null
+  pgdbdata:
+# networks:
+#   network1:
+#     name: network1
+#     driver: bridge
